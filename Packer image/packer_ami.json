@@ -1,0 +1,55 @@
+
+{
+  "variables": {
+      "aws_access_key": "",
+      "aws_secret_key": ""
+
+},
+
+"builders": [
+ {
+"type": "amazon-ebs",
+"region": "eu-west-1",
+"instance_type": "t2.micro",
+"source_ami": "ami-0f89681a05a3a9de7",
+"ssh_username": "ec2-user",
+"ami_name": "tool_server2_image",
+"access_key": "{{user `aws_access_key`}}",
+"secret_key": "{{user `aws_secret_key`}}",
+"vpc_id":  "vpc-596aab20",
+"subnet_id": "subnet-b00805f8",
+"associate_public_ip_address": true
+
+ }
+  ],
+
+
+"provisioners": [
+  {
+    "type": "shell",
+    "script": "Terraform_install.sh"
+  },
+
+  {
+    "type": "file",
+    "source": "june2021.pem",
+    "destination": "~/"
+  },
+
+{
+  "type": "shell",
+  "inline": ["chmod 600 ~/june2021.pem",
+    "cat ~/june2021.pem >> ~/.ssh/authorized_keys"]
+}
+
+
+]
+
+}
+
+
+
+
+
+
+
